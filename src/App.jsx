@@ -3,7 +3,6 @@ import MapChart from './components/MapChart';
 import CountryCard from './components/CountryCard';
 import SearchBar from './components/SearchBar';
 
-import AuthModal from './components/AuthModal';
 import FlightSearch from './components/FlightSearch';
 import { Tooltip } from 'react-tooltip';
 import { visaFreeCountries } from './data/countries';
@@ -22,9 +21,6 @@ function App() {
   const [loadingWeather, setLoadingWeather] = useState(false);
 
   // User & Favorites State
-  const [showAuth, setShowAuth] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
   const [user, setUser] = useState(() => {
     const saved = localStorage.getItem('user_profile');
     // Check if valid user or default guest
@@ -36,10 +32,7 @@ function App() {
     return saved ? JSON.parse(saved) : [];
   });
 
-  useEffect(() => {
-    // Determine login state based on user data logic (simplified)
-    if (user.name !== "Misafir") setIsLoggedIn(true);
-  }, []);
+
 
   useEffect(() => {
     localStorage.setItem('user_profile', JSON.stringify(user));
@@ -51,19 +44,9 @@ function App() {
 
   const handleLogin = (userData) => {
     setUser(userData);
-    setIsLoggedIn(true);
-  };
-
-  const handleLogout = () => {
-    setUser({ name: "Misafir" });
-    setIsLoggedIn(false);
   };
 
   const toggleFavorite = (country) => {
-    if (!isLoggedIn) {
-      setShowAuth(true); // Prompt login if trying to favorite
-      return;
-    }
     if (favorites.find(f => f.id === country.id)) {
       setFavorites(favorites.filter(f => f.id !== country.id));
     } else {
@@ -165,34 +148,10 @@ function App() {
           </h1>
         </div>
         <div>
-          {isLoggedIn ? (
-            <div className="flex items-center gap-3">
-              <div className="flex items-center gap-2 bg-gray-800 px-3 py-1.5 rounded-full border border-gray-700">
-                <div className="w-6 h-6 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-xs font-bold">
-                  {user.name.charAt(0)}
-                </div>
-                <span className="hidden sm:inline font-medium text-sm">{user.name}</span>
-              </div>
-              <button
-                onClick={handleLogout}
-                className="bg-red-900/40 hover:bg-red-900/60 text-red-200 px-3 py-1.5 rounded-lg text-sm transition-colors border border-red-900/50"
-              >
-                Çıkış
-              </button>
-            </div>
-          ) : (
-            <button
-              onClick={() => setShowAuth(true)}
-              className="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2 rounded-lg font-medium transition-colors shadow-lg shadow-blue-600/20"
-            >
-              Giriş Yap / Kayıt Ol
-            </button>
-          )}
         </div>
       </header>
 
-      {/* Modals */}
-      {showAuth && <AuthModal onClose={() => setShowAuth(false)} onLogin={handleLogin} />}
+
 
 
       {/* Country Details Modal */}
@@ -215,7 +174,7 @@ function App() {
       )}
 
       {/* Main Layout: Stacked Vertical */}
-      <main className="flex-1 w-full pt-[72px] flex flex-col h-screen">
+      <main className="flex-1 w-full pt-[72px] flex flex-col min-h-screen">
 
         {/* Top Section: Map (Fixed Height) */}
         <section className="w-full h-[40vh] md:h-[55vh] lg:h-[60vh] relative bg-gray-900 overflow-hidden border-b border-gray-800 shadow-2xl z-0 shrink-0">
@@ -232,7 +191,7 @@ function App() {
         </section>
 
         {/* Bottom Section: Content (Scrollable Grid) */}
-        <section className="flex-1 bg-gray-950 flex flex-col overflow-hidden">
+        <section className="flex-1 bg-gray-950 flex flex-col">
           <div className="container mx-auto px-4 py-4 flex flex-col h-full">
 
 
@@ -256,7 +215,7 @@ function App() {
               <>
                 <SearchBar onSearch={setSearchTerm} onFilterRegion={setRegionFilter} onSortChange={setSortOption} />
 
-                <div className="flex-1 overflow-y-auto mt-4 pb-10 pr-2 scrollbar-thin scrollbar-thumb-gray-800">
+                <div className="flex-1 mt-4 pb-10">
                   {filteredCountries.length > 0 ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                       {filteredCountries.map(c => (
@@ -295,7 +254,7 @@ function App() {
                 </div>
               </>
             ) : (
-              <div className="flex-1 overflow-y-auto pb-10">
+              <div className="flex-1 pb-10">
                 <FlightSearch />
                 <div className="text-center text-gray-500 mt-10">
                   <p>En uygun uçuşları bulmak için bilgileri girip arama yapabilirsiniz.</p>
