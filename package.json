@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "cd dist && rm -rf .git && git init && git config user.name 'Deploy Bot' && git config user.email 'deploy@bot.com' && git checkout -b gh-pages && git add -A && git commit -m 'Deploy' && git push -f https://github.com/taskinhasan/bordo-pasaport-vizesiz.git gh-pages"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.18",

@@ -14,7 +14,7 @@ const CountryCard = ({ country, isFavorite, onToggleFavorite }) => {
     const flightUrl = `https://www.google.com/travel/flights?q=${encodeURIComponent(flightQuery)}`;
 
     return (
-        <div className="bg-gray-900 border border-gray-800 p-6 rounded-2xl shadow-xl w-full relative group">
+        <div className="bg-gray-900 border border-gray-800 p-4 sm:p-6 rounded-2xl shadow-xl w-full relative group">
             <button
                 onClick={onToggleFavorite}
                 className="absolute top-4 right-16 text-2xl hover:scale-110 transition-transform bg-gray-900/50 rounded-full p-1 border border-gray-700 hover:border-red-500/50"

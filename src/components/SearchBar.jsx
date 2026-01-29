@@ -32,7 +32,7 @@ const SearchBar = ({ onSearch, onFilterRegion, onSortChange }) => {
 
     return (
         <div className="w-full bg-gray-900 border border-gray-800 rounded-xl p-4 shadow-lg flex flex-col gap-4">
-            <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row gap-2">
                 <input
                     type="text"
                     placeholder="Ülke ara..."
